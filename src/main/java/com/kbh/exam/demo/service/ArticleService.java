@@ -16,7 +16,6 @@ public class ArticleService {
 	// 생성자
 	public ArticleService(ArticleRepository articleRepository) {
 		this.articleRepository = articleRepository;
-		articleRepository.makeTestData();
 	}
 
 	// 서비스 메서드

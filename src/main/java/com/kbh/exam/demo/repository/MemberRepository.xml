@@ -21,6 +21,12 @@
 		WHERE M.id = #{id}
 	</select>
 
+	<select id="getMemberByLoginId" resultType="Member">
+		SELECT *
+		FROM `member` AS M
+		WHERE M.loginId = #{loginId}
+	</select>
+
 	<select id="getLastInsertId" resultType="int">
 		SELECT LAST_INSERT_ID()
 	</select>

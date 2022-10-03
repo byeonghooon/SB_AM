@@ -40,8 +40,9 @@ public class UsrArticleController {
 
 	@RequestMapping("usr/article/getArticles")
 	@ResponseBody
-	public List<Article> getArticles() {
-		return articleService.getArticles();
+	public ResultData getArticles() {
+		List<Article> articles = articleService.getArticles();
+		return ResultData.from("S-1", "Article List", articles);
 	}
 
 	@RequestMapping("usr/article/doDelete")

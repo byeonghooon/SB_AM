@@ -3,7 +3,9 @@ package com.kbh.exam.demo.service;
 import org.springframework.stereotype.Service;
 
 import com.kbh.exam.demo.repository.MemberRepository;
+import com.kbh.exam.demo.util.Ut;
 import com.kbh.exam.demo.vo.Member;
+import com.kbh.exam.demo.vo.ResultData;
 
 @Service
 public class MemberService {
@@ -14,24 +16,27 @@ public class MemberService {
 		this.memberRepository = memberRepository;
 	}
 
-	public int join(String loginId, String loginPw, String name, String nickname, String cellphoneNum, String email) {
+	public ResultData join(String loginId, String loginPw, String name, String nickname, String cellphoneNum,
+			String email) {
 		Member existsMember = getMemberByLoginId(loginId);
-		
-		if(existsMember != null) {
-			return -1;
+
+		if (existsMember != null) {
+			return ResultData.from("F-7", Ut.f("이미 사용중인 아이디(%s)입니다.", loginId));
 		}
-		existsMember = getMemberByNameAndEmail(name,email);
-		
-		if(existsMember != null) {
-			return -2;
+		existsMember = getMemberByNameAndEmail(name, email);
+
+		if (existsMember != null) {
+			return ResultData.from("F-7", Ut.f("이미 사용중인 이름과(%s) 이메일(%s)입니다.", name, email));
 		}
-		
+
 		memberRepository.join(loginId, loginPw, name, nickname, cellphoneNum, email);
-		return memberRepository.getLastInsertId();
+		int id = memberRepository.getLastInsertId();
+
+		return ResultData.from("S-1", "회원가입이 완료되었습니다", id);
 	}
 
 	private Member getMemberByNameAndEmail(String name, String email) {
-		return memberRepository.getMemberByNameAndEmail(name,email);
+		return memberRepository.getMemberByNameAndEmail(name, email);
 	}
 
 	private Member getMemberByLoginId(String loginId) {

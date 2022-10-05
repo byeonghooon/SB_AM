@@ -24,17 +24,17 @@ public class UsrArticleController {
 	@RequestMapping("usr/article/doAdd")
 	@ResponseBody
 	public ResultData<Article> doAdd(HttpSession httpSession, String title, String body) {
-		boolean isLogined =false;
+		boolean isLogined = false;
 		int loginedMemberId = 0;
-		
+
 		if (httpSession.getAttribute("loginedMemberId") != null) {
 			isLogined = true;
 			loginedMemberId = (int) httpSession.getAttribute("loginedMemberId");
 		}
-		if(isLogined == false) {
+		if (isLogined == false) {
 			return ResultData.from("F-A", "로그인 후 이용해주세요");
 		}
-		
+
 		if (Ut.empty(title)) {
 			return ResultData.from("F-1", "제목을 입력해주세요");
 		}
@@ -42,7 +42,7 @@ public class UsrArticleController {
 			return ResultData.from("F-2", "내용을 입력해주세요");
 		}
 
-		ResultData<Integer> writeArticleRd = articleService.writeArticle(loginedMemberId,title, body);
+		ResultData<Integer> writeArticleRd = articleService.writeArticle(loginedMemberId, title, body);
 
 		int id = (int) writeArticleRd.getData1();
 
@@ -60,54 +60,61 @@ public class UsrArticleController {
 
 	@RequestMapping("usr/article/doDelete")
 	@ResponseBody
-	public ResultData<Integer> doDelete(HttpSession httpSession,int id) {
-		boolean isLogined =false;
+	public ResultData<Integer> doDelete(HttpSession httpSession, int id) {
+		boolean isLogined = false;
 		int loginedMemberId = 0;
-		
+
 		if (httpSession.getAttribute("loginedMemberId") != null) {
 			isLogined = true;
 			loginedMemberId = (int) httpSession.getAttribute("loginedMemberId");
 		}
-		if(isLogined == false) {
+		if (isLogined == false) {
 			return ResultData.from("F-A", "로그인 후 이용해주세요");
 		}
-		
+
 		Article article = articleService.getArticle(id);
 
 		if (article == null) {
 			return ResultData.from("F-1", Ut.f("%d번 게시물은 존재하지 않습니다", id));
 		}
-		if(article.getMemberId()!=loginedMemberId) {
+		if (article.getMemberId() != loginedMemberId) {
 			return ResultData.from("F-2", Ut.f("%d번 게시물에 대한 권한이 없습니다.", id));
 		}
-		
+
 		articleService.deleteArticle(id);
 
 		return ResultData.from("S-1", Ut.f("%d번 게시물을 삭제하였습니다", id));
 	}
 
-	@RequestMapping("usr/article/doModify")
+	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
-	public ResultData<Article> doModify(int id, String title, String body) {
+	public ResultData doModify(HttpSession httpSession, int id, String title, String body) {
+		boolean isLogined = false;
+		int loginedMemberId = 0;
+
+		if (httpSession.getAttribute("loginedMemberId") != null) {
+			isLogined = true;
+			loginedMemberId = (int) httpSession.getAttribute("loginedMemberId");
+		}
+
+		if (isLogined == false) {
+			return ResultData.from("F-A", "로그인 후 이용해주세요");
+		}
+
 		Article article = articleService.getArticle(id);
 
 		if (article == null) {
-			return ResultData.from("F-1", Ut.f("%d번 게시물은 존재하지 않습니다", id));
+			return ResultData.from("F-1", Ut.f("%d번 게시물은 존재하지 않습니다", id), id);
 		}
-		articleService.modifyArticle(id, title, body);
 
-		return ResultData.from("S-1", Ut.f("%d번 게시물을 수정하였습니다", id), article);
-	}
+		ResultData actorCanModifyRd = articleService.actorCanModify(loginedMemberId, article);
 
-	@RequestMapping("usr/article/getArticle")
-	@ResponseBody
-	public ResultData<Article> getArticle(int id) {
-		Article article = articleService.getArticle(id);
-
-		if (article == null) {
-			return ResultData.from("F-1", Ut.f("%d번 게시물은 존재하지 않습니다", id));
+		if (actorCanModifyRd.isFail()) {
+			return actorCanModifyRd;
 		}
-		return ResultData.from("S-1", Ut.f("%d번 게시물입니다.", id), article);
+
+		return articleService.modifyArticle(id, title, body);
+
 	}
 
 }

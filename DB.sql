@@ -38,6 +38,13 @@ title = '제목3',
 SELECT * FROM article;
 SELECT * FROM article ORDER BY id DESC;
 SELECT LAST_INSERT_ID();
+
+ALTER TABLE article ADD COLUMN memberId INT(10) UNSIGNED NOT NULL AFTER updateDate;
+
+UPDATE article
+SET memberId = 2
+WHERE memberId = 0;
+
 #회원 테이블 생성
 CREATE TABLE `member`(
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,

@@ -8,8 +8,18 @@
 <title>LIST</title>
 </head>
 <body>
-	<div>List</div>
+	<h1>List</h1>
 	<hr />
+	
+	<header>
+		<a href="#">로고</a>
+
+		<ul>
+			<li><a href="/">HOME</a></li>
+			<li><a href="/usr/article/list">LIST</a></li>
+		</ul>
+	</header>
+	
 	<table border="1">
 		<thead>
 			<tr>

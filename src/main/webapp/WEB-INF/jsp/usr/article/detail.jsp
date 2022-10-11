@@ -14,27 +14,27 @@
 
 				<tbody>
 					<tr>
-						<th>번호</th>
+						<th bgcolor="gray">번호</th>
 						<td>${article.id }</td>
 					</tr>
 					<tr>
-						<th>작성날짜</th>
+						<th bgcolor="gray">작성날짜</th>
 						<td>${article.regDate }</td>
 					</tr>
 					<tr>
-						<th>수정날짜</th>
+						<th bgcolor="gray">수정날짜</th>
 						<td>${article.updateDate }</td>
 					</tr>
 					<tr>
-						<th>작성자</th>
+						<th bgcolor="gray">작성자</th>
 						<td>${article.memberId }</td>
 					</tr>
 					<tr>
-						<th>제목</th>
+						<th bgcolor="gray">제목</th>
 						<td>${article.title }</td>
 					</tr>
 					<tr>
-						<th>내용</th>
+						<th bgcolor="gray">내용</th>
 						<td>${article.body }</td>
 					</tr>
 				</tbody>

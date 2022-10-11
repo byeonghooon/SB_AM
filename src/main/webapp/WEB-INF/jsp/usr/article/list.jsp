@@ -21,7 +21,7 @@
 						<th>제목</th>
 						<th>작성자</th>
 					</tr>
-				</thead>
+				</thead>   
 				<tbody>
 					<c:forEach var="article" items="${articles }">
 						<tr>

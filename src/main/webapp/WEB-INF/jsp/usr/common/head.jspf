@@ -34,7 +34,9 @@
 				<li class="hover:underline"><a
 					class="h-20 px-3 flex items-center" href="/"><span>HOME</span></a></li>
 				<li class="hover:underline"><a
-					class="h-20 px-3 flex items-center" href="/usr/article/list"><span>LIST</span></a></li>
+					class="h-20 px-3 flex items-center" href="/usr/article/list?boardId=1"><span>NOTICE</span></a></li>
+				<li class="hover:underline"><a
+					class="h-20 px-3 flex items-center" href="/usr/article/list?boardId=2"><span>FREE</span></a></li>
 
 				<li class="hover:underline"><a
 					class="h-20 px-3 flex items-center" href="/usr/article/write"><span>WRITE</span></a></li>

@@ -35,11 +35,11 @@
 					</tr>
 					<tr>
 						<th>내용</th>
-						<td><textarea class="w-full" type="text" name="body" placeholder="내용을 입력해주세요" />${article.body }</textarea></td>
+						<td><textarea class="w-full textarea textarea-warning" type="text" name="body" placeholder="내용을 입력해주세요" />${article.body }</textarea></td>
 					</tr>
 					<tr>
 						<th></th>
-						<td><button type="submit" value="수정" />수정
+						<td><button class="btn btn-accent" type="submit" value="수정" />수정
 							</button></td>
 					</tr>
 				</tbody>

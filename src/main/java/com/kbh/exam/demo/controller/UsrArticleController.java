@@ -24,9 +24,9 @@ public class UsrArticleController {
 	private ArticleService articleService;
 
 	// 액션메서드
-	@RequestMapping("/usr/article/doAdd")
+	@RequestMapping("/usr/article/doWrite")
 	@ResponseBody
-	public ResultData<Article> doAdd(HttpServletRequest req, String title, String body) {
+	public ResultData<Article> doWrite(HttpServletRequest req, String title, String body) {
 		Rq rq = (Rq) req.getAttribute("rq");
 
 		if (Ut.empty(title)) {
@@ -43,6 +43,12 @@ public class UsrArticleController {
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
 
 		return ResultData.newData(writeArticleRd, "article", article);
+	}
+
+	@RequestMapping("/usr/article/write")
+	public String showWrite(HttpServletRequest req, String title, String body) {
+
+		return "usr/article/write";
 	}
 
 	@RequestMapping("/usr/article/list")
@@ -97,13 +103,13 @@ public class UsrArticleController {
 		}
 
 		articleService.modifyArticle(id, title, body);
-		
+
 		return Ut.jsReplace(Ut.f("%d번 게시물을 수정했습니다", id), Ut.f("../article/detail?id=%d", id));
 
 	}
 
 	@RequestMapping("/usr/article/modify")
-	public String showModify(HttpServletRequest req, int id,Model model) {
+	public String showModify(HttpServletRequest req, int id, Model model) {
 
 		Rq rq = (Rq) req.getAttribute("rq");
 

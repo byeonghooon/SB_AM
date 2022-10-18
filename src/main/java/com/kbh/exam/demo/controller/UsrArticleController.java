@@ -2,8 +2,6 @@ package com.kbh.exam.demo.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,12 +24,13 @@ public class UsrArticleController {
 	private ArticleService articleService;
 	@Autowired
 	private BoardService boardService;
+	@Autowired
+	private Rq rq;
 
 	// 액션메서드
 	@RequestMapping("/usr/article/doWrite")
 	@ResponseBody
-	public String doWrite(HttpServletRequest req, String title, String body) {
-		Rq rq = (Rq) req.getAttribute("rq");
+	public String doWrite(String title, String body) {
 
 		if (Ut.empty(title)) {
 			return Ut.jsHistoryBack("제목을 입력해주세요");
@@ -50,21 +49,20 @@ public class UsrArticleController {
 	}
 
 	@RequestMapping("/usr/article/write")
-	public String showWrite(HttpServletRequest req, String title, String body) {
+	public String showWrite(String title, String body) {
 
 		return "usr/article/write";
 	}
 
 	@RequestMapping("/usr/article/list")
-	public String showList(HttpServletRequest req, Model model, int boardId) {
-		Rq rq = (Rq) req.getAttribute("rq");
+	public String showList(Model model, int boardId) {
 
 		Board board = boardService.getBoardById(boardId);
 
 		if (board == null) {
 			return rq.jsHistoryBackOnView("존재하지 않는 게시판입니다.");
 		}
-		
+
 		int articlesCount = articleService.getArticlesCount(boardId);
 
 		List<Article> articles = articleService.getForPrintArticles(rq.getLoginedMemberId(), boardId);
@@ -76,13 +74,9 @@ public class UsrArticleController {
 		return "usr/article/list";
 	}
 
-	
-
 	@RequestMapping("/usr/article/doDelete")
 	@ResponseBody
-	public String doDelete(HttpServletRequest req, int id) {
-
-		Rq rq = (Rq) req.getAttribute("rq");
+	public String doDelete(int id) {
 
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
 
@@ -96,15 +90,13 @@ public class UsrArticleController {
 
 		articleService.deleteArticle(id);
 
-		return Ut.jsReplace(Ut.f("%d번 게시물을 삭제했습니다", id), "../article/list");
+		return Ut.jsReplace(Ut.f("%d번 게시물을 삭제했습니다", id), "../article/list?boardId=1");
 
 	}
 
 	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
-	public String doModify(HttpServletRequest req, int id, String title, String body) {
-
-		Rq rq = (Rq) req.getAttribute("rq");
+	public String doModify(int id, String title, String body) {
 
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
 
@@ -125,9 +117,7 @@ public class UsrArticleController {
 	}
 
 	@RequestMapping("/usr/article/modify")
-	public String showModify(HttpServletRequest req, int id, Model model) {
-
-		Rq rq = (Rq) req.getAttribute("rq");
+	public String showModify(int id, Model model) {
 
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
 
@@ -147,9 +137,7 @@ public class UsrArticleController {
 	}
 
 	@RequestMapping("/usr/article/detail")
-	public String showDetail(HttpServletRequest req, Model model, int id) {
-
-		Rq rq = (Rq) req.getAttribute("rq");
+	public String showDetail(Model model, int id) {
 
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
 

@@ -7,7 +7,8 @@
 	<insert id="writeArticle">
 		INSERT INTO article
 		SET regDate = NOW(),
-		updateDate = NOW(),
+		updateDate =
+		NOW(),
 		title = #{title},
 		`body` = #{body},
 		memberId = #{memberId},
@@ -15,9 +16,11 @@
 	</insert>
 
 	<select id="getForPrintArticle" resultType="Article">
-		SELECT A.* , M.nickname AS extra__writerName
+		SELECT A.* ,
+		M.nickname AS extra__writerName
 		FROM article AS A
-		LEFT JOIN `member` AS M
+		LEFT JOIN `member` AS
+		M
 		ON A.memberId = M.id
 		WHERE A.id = #{id}
 	</select>
@@ -25,16 +28,20 @@
 	<select id="getArticles" resultType="Article">
 		SELECT A.*, M.nickname AS extra__writerName
 		FROM article AS A
-		LEFT JOIN `member` AS M
+		LEFT JOIN
+		`member` AS M
 		ON A.memberId = M.id
 		WHERE 1
 		<if test="boardId != 0">
 			AND A.boardId = ${boardId}
 		</if>
 		ORDER BY A.id DESC
+		<if test="limitTake != -1">
+			LIMIT #{limitStart},#{limitTake}
+		</if>
 	</select>
-	
-		<select id="getArticlesCount" resultType="int">
+
+	<select id="getArticlesCount" resultType="int">
 		SELECT COUNT(*) AS cnt
 		FROM article AS A
 		WHERE 1

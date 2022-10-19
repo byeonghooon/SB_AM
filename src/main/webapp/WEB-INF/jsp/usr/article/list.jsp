@@ -13,7 +13,7 @@
 					<col width="70" />
 					<col width="200" />
 					<col />
-					<col width="80" />
+					<col width="100" />
 				</colgroup>
 				<thead>
 					<tr bgcolor="gray">
@@ -29,22 +29,44 @@
 							<td>${article.id}</td>
 							<td>${article.regDate.substring(2,16)}</td>
 							<td><a class="hover:underline"
-								href="../article/detail?id=${article.id}">${article.title}</a></td>
+									href="../article/detail?id=${article.id}">${article.title}</a></td>
 							<td>${article.extra__writerName}</td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
 		</div>
-		
+
+	</div>
+	<div class="page-menu mt-3 flex justify-center">
+		<div class="btn-group">
+			<c:set var="pageMenuLen" value="4" />
+			<c:set var="startPage"
+				value="${page - pageMenuLen >= 1 ? page - pageMenuLen : 1 }" />
+			<c:set var="endPage"
+				value="${page + pageMenuLen <= pagesCount ? page + pageMenuLen : pagesCount }" />
+
+			<c:if test="${startPage > 1}">
+				<a class="btn btn-sm" href="?page=1&boardId=${boardId }">1</a>
+				<c:if test="${startPage > 2}">
+					<a class="btn btn-sm btn-disabled">...</a>
+				</c:if>
+			</c:if>
+
+			<c:forEach begin="${startPage }" end="${endPage }" var="i">
+				<a class="btn btn-sm ${page == i ? 'btn-active' : '' }"
+					href="?page=${i }&boardId=${boardId}">${i }</a>
+			</c:forEach>
+
+			<c:if test="${endPage < pagesCount}">
+				<c:if test="${endPage < pagesCount - 1}">
+					<a class="btn btn-sm btn-disabled">...</a>
+				</c:if>
+				<a class="btn btn-sm"
+					href="?page=${pagesCount }&boardId=${boardId }">${pagesCount }</a>
+			</c:if>
 		</div>
-		<div class="page-menu mt-3 flex justify-center">
-			<div class="btn-group">
-				<c:forEach begin="1" end="${pagesCount }" var="i">
-					<a class="btn btn-sm ${param.page == i ? 'btn-active' : '' }" href="?page=${i }&boardId=${boardId}">${i }</a>
-				</c:forEach>
-			</div>
-		</div>
+	</div>
 
 
 	</div>

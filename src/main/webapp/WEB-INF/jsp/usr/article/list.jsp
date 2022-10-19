@@ -6,15 +6,15 @@
 
 <section class="mt-8 text-xl">
 	<div class="container mx-auto px-3">
-	<div>${articlesCount } 개</div>
+		<div>${articlesCount }개</div>
 		<div class="table-box-type-1">
 			<table>
-			<colgroup>
-			<col width="70"/>
-			<col width="200"/>
-			<col />
-			<col width="80"/>
-			</colgroup>
+				<colgroup>
+					<col width="70" />
+					<col width="200" />
+					<col />
+					<col width="80" />
+				</colgroup>
 				<thead>
 					<tr bgcolor="gray">
 						<th>번호</th>
@@ -22,19 +22,30 @@
 						<th>제목</th>
 						<th>작성자</th>
 					</tr>
-				</thead>   
+				</thead>
 				<tbody>
 					<c:forEach var="article" items="${articles }">
 						<tr>
 							<td>${article.id}</td>
 							<td>${article.regDate.substring(2,16)}</td>
-							<td><a class="hover:underline" href="../article/detail?id=${article.id}">${article.title}</a></td>
+							<td><a class="hover:underline"
+								href="../article/detail?id=${article.id}">${article.title}</a></td>
 							<td>${article.extra__writerName}</td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
 		</div>
+		
+		</div>
+		<div class="page-menu mt-3 flex justify-center">
+			<div class="btn-group">
+				<c:forEach begin="1" end="20" var="i">
+					<a class="btn btn-sm ${param.page == i ? 'btn-active' : '' }" href="?page=${i }">${i }</a>
+				</c:forEach>
+			</div>
+		</div>
+
 
 	</div>
 </section>

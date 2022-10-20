@@ -57,8 +57,8 @@ public class UsrArticleController {
 
 	@RequestMapping("/usr/article/list")
 	public String showList(Model model, @RequestParam(defaultValue = "1") int boardId,
-			@RequestParam(defaultValue = "title,body") String searchKeywordTypeCode, String searchKeyword,
-			@RequestParam(defaultValue = "1") int page) {
+			@RequestParam(defaultValue = "title,body") String searchKeywordTypeCode,
+			@RequestParam(defaultValue = "") String searchKeyword, @RequestParam(defaultValue = "1") int page) {
 
 		Board board = boardService.getBoardById(boardId);
 
@@ -66,13 +66,13 @@ public class UsrArticleController {
 			return rq.jsHistoryBackOnView("존재하지 않는 게시판입니다.");
 		}
 
-		int articlesCount = articleService.getArticlesCount(boardId,searchKeywordTypeCode,searchKeyword);
+		int articlesCount = articleService.getArticlesCount(boardId, searchKeywordTypeCode, searchKeyword);
 
 		int itemsInAPage = 10;
 
 		int pagesCount = (int) Math.ceil((double) articlesCount / itemsInAPage);
 
-		List<Article> articles = articleService.getForPrintArticles(rq.getLoginedMemberId(), boardId, page,
+		List<Article> articles = articleService.getForPrintArticles(rq.getLoginedMemberId(),searchKeywordTypeCode, searchKeyword, boardId, page,
 				itemsInAPage);
 
 		model.addAttribute("boardId", boardId);

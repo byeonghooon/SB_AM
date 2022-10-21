@@ -46,7 +46,8 @@
 				<otherwise>
 					AND (
 					A.title LIKE CONCAT('%', #{searchKeyword}, '%')
-					OR A.body LIKE CONCAT('%', #{searchKeyword}, '%')
+					OR
+					A.body LIKE CONCAT('%', #{searchKeyword}, '%')
 					)
 				</otherwise>
 			</choose>
@@ -75,7 +76,8 @@
 				<otherwise>
 					AND (
 					A.title LIKE CONCAT('%', #{searchKeyword}, '%')
-					OR A.body LIKE CONCAT('%', #{searchKeyword}, '%')
+					OR
+					A.body LIKE CONCAT('%', #{searchKeyword}, '%')
 					)
 				</otherwise>
 			</choose>
@@ -94,6 +96,12 @@
 			<if test="body != null and body != ''">`body` = #{body},</if>
 			updateDate = NOW()
 		</set>
+		WHERE id = #{id}
+	</update>
+
+	<update id="increaseHitCount">
+		UPDATE article
+		SET hitCount = hitCount + 1
 		WHERE id = #{id}
 	</update>
 

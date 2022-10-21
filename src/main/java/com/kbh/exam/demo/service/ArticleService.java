@@ -39,11 +39,11 @@ public class ArticleService {
 
 	}
 
-	public List<Article> getForPrintArticles(int actorId, String searchKeywordTypeCode, String searchKeyword,
-			int boardId, int page, int itemsInAPage) {
+	public List<Article> getForPrintArticles(int actorId, int boardId, int itemsInAPage, int page,
+			String searchKeywordTypeCode, String searchKeyword) {
+
 		int limitStart = (page - 1) * itemsInAPage;
 		int limitTake = itemsInAPage;
-
 		List<Article> articles = articleRepository.getArticles(boardId, searchKeywordTypeCode, searchKeyword,
 				limitStart, limitTake);
 

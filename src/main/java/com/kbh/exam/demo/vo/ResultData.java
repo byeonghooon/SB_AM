@@ -3,6 +3,7 @@ package com.kbh.exam.demo.vo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
 @NoArgsConstructor
 @ToString
 public class ResultData<DT> {
@@ -14,14 +15,16 @@ public class ResultData<DT> {
 	private DT data1;
 	@Getter
 	private String data1Name;
-
-
+	@Getter
+	private Object data2;
+	@Getter
+	private String data2Name;
 
 	public static <DT> ResultData<DT> from(String resultCode, String msg) {
 		return from(resultCode, msg, null, null);
 	}
 
-	public static <DT> ResultData<DT> from(String resultCode, String msg,String data1Name, DT data1) {
+	public static <DT> ResultData<DT> from(String resultCode, String msg, String data1Name, DT data1) {
 		ResultData<DT> rd = new ResultData<DT>();
 		rd.resultCode = resultCode;
 		rd.msg = msg;
@@ -41,6 +44,11 @@ public class ResultData<DT> {
 
 	public static <DT> ResultData<DT> newData(ResultData Rd, String data1Name, DT data1) {
 		return from(Rd.getResultCode(), Rd.getMsg(), data1Name, data1);
+	}
+
+	public void setData2(String dataName, Object data) {
+		data2Name = dataName;
+		data2 = data;
 	}
 
 }

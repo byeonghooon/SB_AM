@@ -20,5 +20,9 @@ public class Article {
 	private boolean extra__actorCanDelete;
 	private boolean extra__actorCanModify;
 	
+	private int extra__sumReactionPoint;
+	private int extra__goodReactionPoint;
+	private int extra__badReactionPoint;
+	
 
 }

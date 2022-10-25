@@ -60,7 +60,11 @@
 					</tr>
 					<tr>
 						<th bgcolor="gray">조회수</th>
-						<td><span class="article-detail__hit-count">${article.hitCount }</span></td>
+						<td><span class="badge article-detail__hit-count">${article.hitCount }</span></td>
+					</tr>
+					<tr>
+						<th bgcolor="gray">추천</th>
+						<td><span class="badge">${article.extra__goodReactionPoint }</span></td>
 					</tr>
 					<tr>
 						<th bgcolor="gray">제목</th>

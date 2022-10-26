@@ -64,7 +64,15 @@
 					</tr>
 					<tr>
 						<th bgcolor="gray">추천</th>
-						<td><span class="badge">${article.extra__goodReactionPoint }</span></td>
+						<td>
+						<span class="badge">${article.extra__goodReactionPoint }</span>
+							<c:if test="${actorCanMakeReaction}">
+								<span>&nbsp;</span>
+								<button class="btn btn-outline btn-success btn-xs">좋아요👍</button>
+								<span>&nbsp;</span>
+								<button class="btn btn-outline btn-error btn-xs">싫어요👎</button>
+							</c:if>
+						</td>
 					</tr>
 					<tr>
 						<th bgcolor="gray">제목</th>

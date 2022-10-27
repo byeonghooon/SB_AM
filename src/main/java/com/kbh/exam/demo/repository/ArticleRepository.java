@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.kbh.exam.demo.vo.Article;
 
@@ -34,6 +35,25 @@ public interface ArticleRepository {
 			</script>
 				""")
 	public int getArticleHitCount(int id);
+
+	
+	@Update("""
+			<script>
+			UPDATE article
+			SET goodReactionPoint = goodReactionPoint + 1
+			WHERE id = #{relId}
+			</script>
+				""")
+	public int increaseGoodReactionPoint(int relId);
+
+	@Update("""
+			<script>
+			UPDATE article
+			SET badReactionPoint = badReactionPoint + 1
+			WHERE id = #{relId}
+			</script>
+				""")
+	public int increaseBadReactionPoint(int relId);
 
 
 }

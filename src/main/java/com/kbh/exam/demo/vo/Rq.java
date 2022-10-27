@@ -14,6 +14,7 @@ import com.kbh.exam.demo.service.MemberService;
 import com.kbh.exam.demo.util.Ut;
 
 import lombok.Getter;
+
 @Component
 @Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class Rq {
@@ -28,14 +29,14 @@ public class Rq {
 	private HttpServletResponse resp;
 	private HttpSession Session;
 
-	public Rq(HttpServletRequest req, HttpServletResponse resp,MemberService memberService) {
+	public Rq(HttpServletRequest req, HttpServletResponse resp, MemberService memberService) {
 		this.req = req;
 		this.resp = resp;
 
 		this.Session = req.getSession();
 		boolean isLogined = false;
 		int loginedMemberId = 0;
-		Member loginedMember =null;
+		Member loginedMember = null;
 
 		if (Session.getAttribute("loginedMemberId") != null) {
 			isLogined = true;
@@ -45,7 +46,7 @@ public class Rq {
 		this.isLogined = isLogined;
 		this.loginedMemberId = loginedMemberId;
 		this.loginedMember = loginedMember;
-		
+
 		this.req.setAttribute("rq", this);
 	}
 
@@ -80,6 +81,7 @@ public class Rq {
 		req.setAttribute("historyBack", true);
 		return "usr/common/js";
 	}
+
 	public String jsHistoryBack(String msg) {
 		return Ut.jsHistoryBack(msg);
 	}
@@ -88,7 +90,25 @@ public class Rq {
 		return Ut.jsReplace(msg, uri);
 	}
 
+	public String getCurrentUri() {
+		String currentUri = req.getRequestURI();
+		String queryString = req.getQueryString();
+
+		if (queryString != null && queryString.length() > 0) {
+			currentUri += "?" + queryString;
+		}
+
+		return currentUri;
+	}
+
+	public String getEncodedCurrentUri() {
+
+		return Ut.getUriEncoded(getCurrentUri());
+	}
+
+	// 해당 메서드는 Rq 객체의 생성을 유도한다.
+	// 삭제 금지, 편의를 위하여 BeforeActionInterceptor 에서 호출해줘야 한다.
 	public void initOnBeforeActionInterceptor() {
-		
+
 	}
 }

@@ -34,6 +34,12 @@
 						<td><span class="badge ">${article.hitCount }</span></td>
 					</tr>
 					<tr>
+						<th bgcolor="gray">추천</th>
+						<td>
+						<span class="badge">${article.goodReactionPoint }</span>
+						</td>
+					</tr>
+					<tr>
 						<th>제목</th>
 						<td><input class="w-full" type="text" name="title" placeholder="제목을 입력해주세요" value="${article.title }" /></td>
 					</tr>

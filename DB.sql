@@ -111,6 +111,7 @@ updateDate = NOW(),
 `code` = 'free1',
 `name` = '자유';
 
+
 # 게시물 테이블에 boardId 칼럼 추가
 ALTER TABLE article ADD COLUMN boardId INT(10) UNSIGNED NOT NULL AFTER `memberId`;
 
@@ -124,18 +125,14 @@ UPDATE article
 SET boardId = 2
 WHERE id IN (3);
 
-# 게시물 테이블에 hitCount 칼럼 추가
-ALTER TABLE article ADD COLUMN hitCount INT(10) UNSIGNED NOT NULL DEFAULT 0;
-
-DESC article;
-
 SELECT * FROM `member`;
 
 SELECT * FROM article;
 
 SELECT * FROM board;
 
-SELECT LAST_INSERT_ID();
+# 게시물 테이블에 boardId 칼럼 추가
+ALTER TABLE article ADD COLUMN hitCount INT(10) UNSIGNED NOT NULL DEFAULT 0;
 
 # reactionPoint 테이블
 CREATE TABLE reactionPoint (
@@ -183,9 +180,9 @@ updateDate = NOW(),
 memberId = 2,
 relTypeCode = 'article',
 relId = 2,
-`point` = 1;
+`point` = -1;
 
-# 3번 회원이 1번 article 에 좋어요
+# 3번 회원이 1번 article 에 좋아요
 INSERT INTO reactionPoint
 SET regDate = NOW(),
 updateDate = NOW(),
@@ -194,8 +191,17 @@ relTypeCode = 'article',
 relId = 1,
 `point` = 1;
 
+# 게시물 테이블에 goodReactionPoint 칼럼 추가
+ALTER TABLE article ADD COLUMN goodReactionPoint INT(10) UNSIGNED NOT NULL DEFAULT 0;
+
+# 게시물 테이블에 badReactionPoint 칼럼 추가
+ALTER TABLE article ADD COLUMN badReactionPoint INT(10) UNSIGNED NOT NULL DEFAULT 0;
+
 SELECT * FROM reactionPoint;
 
+DESC article;
+
+SELECT LAST_INSERT_ID();
 
 /*# 게시물 갯수 늘리기
 insert into article
@@ -205,3 +211,74 @@ insert into article
 select now(), now(), FLOOR(RAND() * 2) + 1, FLOOR(RAND() * 2) + 1, concat('제목_',rand()), CONCAT('내용_',RAND())
 from article;
 */
+
+/*
+--> getArticles
+select A.*, 
+IFNULL(SUM(RP.point),0) AS extra__sumReactionPoint,
+IFNULL(SUM(if(RP.point > 0, RP.point, 0)),0) AS extra__goodReactionPoint,
+IFNULL(SUM(IF(RP.point < 0, RP.point, 0)),0) AS extra__badReactionPoint
+from (
+	SELECT A.*, M.nickname AS extra__writerName
+	FROM article AS A
+	LEFT JOIN `member` AS M
+	ON A.memberId= M.id 
+			) As A
+left JOIN reactionPoint AS RP
+ON RP.relTypeCode = 'article'
+and A.id = RP.relId
+group by A.id
+*/
+/*
+--> getArticle
+SELECT A.*, M.nickname AS extra__writerName,
+IFNULL(SUM(RP.point),0) AS extra__sumReactionPoint,
+IFNULL(SUM(if(RP.point > 0, RP.point, 0)),0) AS extra__goodReactionPoint,
+IFNULL(SUM(IF(RP.point < 0, RP.point, 0)),0) AS extra__badReactionPoint
+FROM article AS A
+LEFT JOIN `member` AS M
+ON A.memberId = M.id
+LEFT JOIN reactionPoint AS RP
+on RP.relTypeCode = 'article'
+and A.id = RP.relId
+WHERE A.id =1
+GROUP BY A.id
+*/
+
+/*
+select ifnull(sum(RP.point),0) as s
+from reactionPoint AS RP
+where RP.relTypeCode = 'article'
+AND RP.relId = 2
+and RP.memberId = 2
+*/
+
+/*
+--> 각 게시물 별, 좋아요, 싫어요 총합
+select RP.relTypeCode, RP.relId,
+sum(if(RP.point > 0, RP.point, 0)) as goodReactionPoint,
+sum(IF(RP.point < 0, RP.point * -1, 0)) AS badReactionPoint
+from reactionPoint as RP
+group by RP.relTypeCode, RP.relId
+*/
+
+/*
+SELECT *
+FROM reactionPoint AS RP
+GROUP BY RP.relTypeCode, RP.relId
+*/
+
+SELECT * FROM article;
+
+# 기존 게시물의 goodReactionPoint,badReactionPoint 필드의 값 채워주기
+UPDATE article AS A
+INNER JOIN (
+	SELECT RP.relTypeCode, RP.relId,
+	SUM(IF(RP.point > 0, RP.point, 0)) AS goodReactionPoint,
+	SUM(IF(RP.point < 0, RP.point * -1, 0)) AS badReactionPoint
+	FROM reactionPoint AS RP
+	GROUP BY RP.relTypeCode, RP.relId
+) AS RP_SUM
+ON A.id = RP_SUM.relId
+SET A.goodReactionPoint = RP_SUM.goodReactionPoint,
+A.badReactionPoint = RP_SUM.badReactionPoint;

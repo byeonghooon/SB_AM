@@ -60,14 +60,12 @@
 					</tr>
 					<tr>
 						<th bgcolor="gray">조회수</th>
-						<td>
-							<span class="badge article-detail__hit-count">${article.hitCount }</span>
+						<td><span class="badge article-detail__hit-count">${article.hitCount }</span>
 						</td>
 					</tr>
 					<tr>
 						<th bgcolor="gray">추천</th>
-						<td>
-							<span class="badge ">${article.goodReactionPoint }</span>
+						<td><span class="badge ">${article.goodReactionPoint }</span>
 							<c:if test="${actorCanMakeReaction}">
 								<span>&nbsp;</span>
 								<a
@@ -77,9 +75,7 @@
 								<a
 									href="/usr/reactionPoint/doBadReaction?relTypeCode=article&relId=${param.id}&replaceUri=${rq.encodedCurrentUri}"
 									class="btn btn-outline btn-xs">싫어요 👎</a>
-							</c:if>
-
-							<c:if test="${actorCanCancelGoodReaction}">
+							</c:if> <c:if test="${actorCanCancelGoodReaction}">
 								<span>&nbsp;</span>
 								<a
 									href="/usr/reactionPoint/doCancelGoodReaction?relTypeCode=article&relId=${param.id}&replaceUri=${rq.encodedCurrentUri} "
@@ -88,9 +84,7 @@
 								<a onclick="alert(this.title); return false;"
 									title="좋아요를 먼저 취소해주세요" href="#" class="btn btn-outline btn-xs">싫어요
 									👎</a>
-							</c:if>
-
-							<c:if test="${actorCanCancelBadReaction}">
+							</c:if> <c:if test="${actorCanCancelBadReaction}">
 								<span>&nbsp;</span>
 								<a onclick="alert(this.title); return false;"
 									title="싫어요를 먼저 취소해주세요" href="#" class="btn btn-outline btn-xs">좋아요
@@ -99,8 +93,7 @@
 								<a
 									href="/usr/reactionPoint/doCancelBadReaction?relTypeCode=article&relId=${param.id}&replaceUri=${rq.encodedCurrentUri}"
 									class="btn btn-xs btn-primary">싫어요 👎</a>
-							</c:if>
-						</td>
+							</c:if></td>
 					</tr>
 					<tr>
 						<th bgcolor="gray">제목</th>
@@ -127,5 +120,28 @@
 		</div>
 	</div>
 </section>
+
+<section class="mt-5">
+	<div class="container mx-auto px-3">
+		<h2>댓글 작성</h2>
+		<c:if test="${rq.isLogined() }">
+		<form action="">
+			<input type="hidden" name="relTypeCode" value="article" /> <input
+				type="hidden" name="relId" value="${article.id }" />
+			<div>작성자 : ${rq.loginedMember.nickname }</div>
+			<textarea required="required"
+				class="textarea textarea-bordered w-full" type="text" name="body"
+				placeholder="댓글을 입력해주세요" rows="3"/></textarea>
+			<button class="btn btn-active btn-xs btn-ghost" type="submit">
+			댓글작성
+			</button>
+		</form>
+		</c:if>
+		<c:if test="${rq.isNotLogined()}">
+		<a class="btn btn-xs btn-ghost"href="/usr/member/login">로그인</a> 후 이용해주세요
+		</c:if>
+	</div>
+</section>
+
 
 <%@ include file="../common/foot.jspf"%>

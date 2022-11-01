@@ -13,6 +13,14 @@ public class Ut {
 		if (obj instanceof String == false) {
 			return true;
 		}
+		
+		if (obj instanceof Integer) {
+			return ((int) obj) == 0;
+		}
+
+		if (obj instanceof Long) {
+			return ((long) obj) == 0;
+		}
 
 		String str = (String) obj;
 
@@ -60,7 +68,7 @@ public class Ut {
 				</script>
 				""", msg, uri);
 	}
-	
+
 	public static String getUriEncoded(String str) {
 		try {
 			return URLEncoder.encode(str, "UTF-8");

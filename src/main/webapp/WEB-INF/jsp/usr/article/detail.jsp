@@ -33,23 +33,7 @@
 		setTimeout(ArticleDetail__increaseHitCount, 2000);
 	})
 </script>
-<script>
-	// 댓글관련
-	let ReplyWrite__submitFormDone = false;
-	function ReplyWrite__submitForm(form) {
-		if (ReplyWrite__submitFormDone) {
-			return;
-		}
-		form.body.value = form.body.value.trim();
-		if (form.body.value.length < 2) {
-			alert('2글자 이상 입력해주세요');
-			form.body.focus();
-			return;
-		}
-		ReplyWrite__submitFormDone = true;
-		form.submit();
-	}
-</script>
+
 
 <section class="mt-8 text-xl">
 	<div class="container mx-auto px-3">
@@ -139,6 +123,24 @@
 	</div>
 </section>
 
+<script>
+	// 댓글관련
+	let ReplyWrite__submitFormDone = false;
+	function ReplyWrite__submitForm(form) {
+		if (ReplyWrite__submitFormDone) {
+			return;
+		}
+		form.body.value = form.body.value.trim();
+		if (form.body.value.length < 2) {
+			alert('2글자 이상 입력해주세요');
+			form.body.focus();
+			return;
+		}
+		ReplyWrite__submitFormDone = true;
+		form.submit();
+	}
+</script>
+
 <section class="mt-5">
 	<div class="container mx-auto px-3">
 		<h2>댓글 작성</h2>
@@ -160,5 +162,10 @@
 	</div>
 </section>
 
+<section class="mt-5">
+	<div class="container mx-auto px-3">
+		<h2>댓글 리스트(${repliesCount })</h2>
+	</div>
+</section>
 
 <%@ include file="../common/foot.jspf"%>

@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.kbh.exam.demo.service.ArticleService;
 import com.kbh.exam.demo.service.BoardService;
 import com.kbh.exam.demo.service.ReactionPointService;
+import com.kbh.exam.demo.service.ReplyService;
 import com.kbh.exam.demo.util.Ut;
 import com.kbh.exam.demo.vo.Article;
 import com.kbh.exam.demo.vo.Board;
+import com.kbh.exam.demo.vo.Reply;
 import com.kbh.exam.demo.vo.ResultData;
 import com.kbh.exam.demo.vo.Rq;
 
@@ -26,6 +28,8 @@ public class UsrArticleController {
 	private ArticleService articleService;
 	@Autowired
 	private BoardService boardService;
+	@Autowired
+	private ReplyService replyService;
 	@Autowired
 	private Rq rq;
 	@Autowired
@@ -156,11 +160,16 @@ public class UsrArticleController {
 
 		model.addAttribute("article", article);
 
+		List<Reply> replies = replyService.getForPrintReplies(rq.getLoginedMemberId(),"article", id);
+		
+		int repliesCount = replies.size();
+		
 		ResultData actorCanMakeReactionRd = reactionPointService.actorCanMakeReaction(rq.getLoginedMemberId(),
 				"article", id);
 
 		model.addAttribute("actorCanMakeReactionRd", actorCanMakeReactionRd);
 		model.addAttribute("actorCanMakeReaction", actorCanMakeReactionRd.isSuccess());
+		model.addAttribute("repliesCount", repliesCount);
 
 		if (actorCanMakeReactionRd.getResultCode().equals("F-2")) {
 			int sumReactionPointByMemberId = (int) actorCanMakeReactionRd.getData1();

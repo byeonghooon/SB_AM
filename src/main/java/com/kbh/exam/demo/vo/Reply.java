@@ -22,6 +22,8 @@ public class Reply {
 	private boolean extra__actorCanDelete;
 	private boolean extra__actorCanModify;
 	
-	
+	public String getForPrintBody() {
+		return body.replaceAll("\n", "<br>");
+	}
 
 }

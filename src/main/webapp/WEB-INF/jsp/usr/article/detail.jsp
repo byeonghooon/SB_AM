@@ -103,7 +103,7 @@
 					</tr>
 					<tr>
 						<th bgcolor="gray">내용</th>
-						<td>${article.body }</td>
+						<td>${article.getForPrintBody() }</td>
 					</tr>
 				</tbody>
 
@@ -164,7 +164,36 @@
 
 <section class="mt-5">
 	<div class="container mx-auto px-3">
-		<h2>댓글 리스트(${repliesCount })</h2>
+		<h2>댓글 리스트(${replies.size() })</h2>
+		<table class="table table-fixed w-full">
+				<colgroup>
+					<col width="70" />
+					<col width="200" />
+					<col width="80" />
+					<col width="60" />
+					<col width="400" />
+				</colgroup>
+				<thead>
+					<tr bgcolor="gray">
+						<th>번호</th>
+						<th>날짜</th>
+						<th>작성자</th>
+						<th>추천</th>
+						<th class="text-center">내용</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach var="reply" items="${replies }">
+						<tr>
+							<td>${reply.id}</td>
+							<td>${reply.regDate.substring(2,16)}</td>					
+							<td>${reply.extra__writerName}</td>
+							<td>${reply.goodReactionPoint}</td>
+							<td class="text-center">${reply.getForPrintBody()}</td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
 	</div>
 </section>
 

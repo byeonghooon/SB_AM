@@ -33,13 +33,13 @@ public interface ReplyRepository {
 
 	@Select("""
 			<script>
-				SELECT R.*
+				SELECT R.*, M.nickname AS extra__writerName
 				FROM reply AS R
 				LEFT JOIN `member` AS M
 				ON R.memberId = M.id
 				WHERE R.relTypeCode = #{relTypeCode}
 				AND R.relId = #{relId} 
-				ORDER BY R.id DESC
+				ORDER BY R.id ASC
 			</script>
 			""")
 	public List<Reply> getForPrintReplies(int actorId, String relTypeCode, int relId);

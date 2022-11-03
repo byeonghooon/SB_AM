@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.kbh.exam.demo.vo.Reply;
 
@@ -63,5 +64,15 @@ public interface ReplyRepository {
 		</script>
 		""")
 	public void deleteReply(int id);
+
+	@Update("""
+			<script>
+			UPDATE reply
+			SET updateDate = NOW(),
+			`body` = #{body}
+			WHERE id = #{id}		
+		</script>
+			""")
+	public void modifyReply(int id, String body);
 
 }

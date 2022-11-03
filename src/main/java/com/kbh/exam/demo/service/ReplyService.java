@@ -44,7 +44,7 @@ public class ReplyService {
 
 		return reply;
 	}
-	
+
 	private void updateForPrintData(Member actor, Reply reply) {
 		if (actor == null) {
 			return;
@@ -56,7 +56,7 @@ public class ReplyService {
 		reply.setExtra__actorCanModify(actorCanModifyRd.isSuccess());
 
 	}
-	
+
 	public ResultData actorCanDelete(Member actor, Reply reply) {
 
 		if (reply == null) {
@@ -69,7 +69,7 @@ public class ReplyService {
 
 		return ResultData.from("S-1", "삭제 가능");
 	}
-	
+
 	public ResultData actorCanModify(Member actor, Reply reply) {
 
 		if (reply == null) {
@@ -86,6 +86,11 @@ public class ReplyService {
 	public ResultData deleteReply(int id) {
 		replyRepository.deleteReply(id);
 		return ResultData.from("S-1", Ut.f("%d번 댓글을 삭제했습니다", id));
+	}
+
+	public ResultData modifyReply(int id, String body) {
+		replyRepository.modifyReply(id, body);
+		return ResultData.from("S-1", Ut.f("%d번 댓글을 수정했습니다", id));
 	}
 
 }

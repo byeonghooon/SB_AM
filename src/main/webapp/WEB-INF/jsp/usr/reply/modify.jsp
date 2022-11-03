@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pageTitle" value="REPLY MODIFY" />
 <%@ include file="../common/head.jspf"%>
@@ -23,9 +24,9 @@
 
 <section class="mt-8 text-xl">
 	<div class="container mx-auto px-3">
-		<form class="table-box-type-1" method="POST" action="../reply/doModify"
-			onsubmit="ReplyModify__submit(this); return false;"
-		>
+		<form class="table-box-type-1" method="POST"
+			action="../reply/doModify"
+			onsubmit="ReplyModify__submit(this); return false;">
 			<input type="hidden" name="id" value="${reply.id }" />
 			<table class="table table-zebra w-full">
 				<colgroup>
@@ -65,14 +66,12 @@
 					</tr>
 					<tr>
 						<th>추천</th>
-						<td>
-							<span class="badge ">${reply.goodReactionPoint }</span>
-						</td>
+						<td><span class="badge ">${reply.goodReactionPoint }</span></td>
 					</tr>
 					<tr>
 						<th>내용</th>
-						<td>
-							<textarea class="textarea textarea-bordered w-full" type="text" name="body" placeholder="내용을 입력해주세요" />${reply.body }</textarea>
+						<td><textarea class="textarea textarea-bordered w-full"
+								type="text" name="body" placeholder="내용을 입력해주세요" />${reply.body }</textarea>
 						</td>
 					</tr>
 					<tr>
@@ -89,7 +88,8 @@
 		</form>
 
 		<div class="btns">
-			<button class="btn-text-link btn btn-active btn-ghost" type="button" onclick="history.back();">뒤로가기</button>
+			<button class="btn-text-link btn btn-active btn-ghost" type="button"
+				onclick="history.back();">뒤로가기</button>
 		</div>
 	</div>
 </section>

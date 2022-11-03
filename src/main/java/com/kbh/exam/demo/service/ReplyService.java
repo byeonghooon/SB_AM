@@ -37,8 +37,12 @@ public class ReplyService {
 		return replies;
 	}
 
-	public Reply getForPrintReply(int actorId, int id) {
-		return replyRepository.getForPrintReply(actorId,id);
+	public Reply getForPrintReply(Member actor, int id) {
+		Reply reply = replyRepository.getForPrintReply(id);
+
+		updateForPrintData(actor, reply);
+
+		return reply;
 	}
 	
 	private void updateForPrintData(Member actor, Reply reply) {
@@ -77,6 +81,11 @@ public class ReplyService {
 		}
 
 		return ResultData.from("S-1", "수정 가능");
+	}
+
+	public ResultData deleteReply(int id) {
+		replyRepository.deleteReply(id);
+		return ResultData.from("S-1", Ut.f("%d번 댓글을 삭제했습니다", id));
 	}
 
 }

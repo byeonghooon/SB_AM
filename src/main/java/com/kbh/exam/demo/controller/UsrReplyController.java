@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kbh.exam.demo.service.ReplyService;
 import com.kbh.exam.demo.util.Ut;
+import com.kbh.exam.demo.vo.Reply;
 import com.kbh.exam.demo.vo.ResultData;
 import com.kbh.exam.demo.vo.Rq;
 
@@ -50,4 +51,24 @@ public class UsrReplyController {
 
 		return rq.jsReplace(writeReplyRd.getMsg(), replaceUri);
 	}
+	
+//	@RequestMapping("/usr/reply/doDelete")
+//	@ResponseBody
+//	public String doDelete(int id) {
+//
+//		Reply reply = replyService.getForPrintReply(rq.getLoginedMemberId(), id);
+//
+//		if (reply == null) {
+//			return Ut.jsHistoryBack(Ut.f("%d번 게시물은 존재하지 않습니다", id));
+//		}
+//
+//		if (reply.getMemberId() != rq.getLoginedMemberId()) {
+//			return Ut.jsHistoryBack(Ut.f("%d번 게시물에 대한 권한이 없습니다.", id));
+//		}
+//
+//		replyService.deleteArticle(id);
+//
+//		return Ut.jsReplace(Ut.f("%d번 게시물을 삭제했습니다", id), "../article/list?boardId=1");
+//
+//	}
 }

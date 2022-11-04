@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pageTitle" value="MYPAGE" />
 <%@ include file="../common/head.jspf"%>
+<%@ page import="com.kbh.exam.demo.util.Ut" %>
 
 <section class="mt-8 text-xl">
 	<div class="container mx-auto px-3">
@@ -44,7 +45,7 @@
 		</div>
 		<div class="btns mt-3">
 			<button class="btn btn-active btn-ghost" type="button" onclick="history.back();">뒤로가기</button>
-			<a href="../member/checkPassword" class="btn btn-active btn-ghost"> 회원정보수정 </a>		
+			<a href="../member/checkPassword?replaceUri=${Ut.getUriEncoded('../member/modify') }" class="btn btn-active btn-ghost"> 회원정보수정 </a>		
 		</div>
 	</div>
 </section>

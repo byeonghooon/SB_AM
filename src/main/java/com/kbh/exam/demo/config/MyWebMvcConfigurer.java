@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.kbh.exam.demo.interceptor.BeforeActionInterceptor;
 import com.kbh.exam.demo.interceptor.NeedLoginInterceptor;
+import com.kbh.exam.demo.interceptor.NeedLogoutInterceptor;
 
 @Configuration
 public class MyWebMvcConfigurer implements WebMvcConfigurer {
@@ -17,6 +18,8 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
 	BeforeActionInterceptor beforeActionInterceptor;
 	@Autowired
 	NeedLoginInterceptor needLoginInterceptor;
+	@Autowired
+	NeedLogoutInterceptor needLogoutInterceptor;
 
 	// 인터셉터 적용
 	@Override
@@ -30,6 +33,15 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
 		ir.excludePathPatterns("/error");
 
 		ir = registry.addInterceptor(needLoginInterceptor);
+		ir.addPathPatterns("/usr/member/myPage");
+		ir.addPathPatterns("/usr/member/checkPassword");
+		ir.addPathPatterns("/usr/member/doCheckPassword");
+		ir.addPathPatterns("/usr/member/doModify");
+		ir.addPathPatterns("/usr/member/modify");
+		ir.addPathPatterns("/usr/reply/doWrite");
+		ir.addPathPatterns("/usr/reply/doDelete");
+		ir.addPathPatterns("/usr/reply/doModify");
+		ir.addPathPatterns("/usr/reply/modify");
 		ir.addPathPatterns("/usr/article/write");
 		ir.addPathPatterns("/usr/article/doAdd");
 		ir.addPathPatterns("/usr/article/modify");
@@ -37,6 +49,19 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
 		ir.addPathPatterns("/usr/article/doDelete");
 		ir.addPathPatterns("/usr/reactionPoint/doGoodReaction");
 		ir.addPathPatterns("/usr/reactionPoint/doBadReaction");
+		ir.addPathPatterns("/usr/reactionPoint/doCancelGoodReaction");
+		ir.addPathPatterns("/usr/reactionPoint/doCancelBadReaction");
+		
+		ir = registry.addInterceptor(needLogoutInterceptor);
+		ir.addPathPatterns("/usr/member/login");
+		ir.addPathPatterns("/usr/member/doLogin");
+		ir.addPathPatterns("/usr/member/join");
+		ir.addPathPatterns("/usr/member/doJoin");
+		ir.addPathPatterns("/usr/member/findLoginId");
+		ir.addPathPatterns("/usr/member/doFindLoginId");
+		ir.addPathPatterns("/usr/member/findLoginPw");
+		ir.addPathPatterns("/usr/member/doFindLoginPw");
 	}
+	
 
 }

@@ -56,10 +56,6 @@ public class UsrMemberController {
 	@ResponseBody
 	public String doLogin(String loginId, String loginPw) {
 
-		if (rq.isLogined()) {
-			return Ut.jsHistoryBack("이미 로그인되어있습니다");
-		}
-
 		if (Ut.empty(loginId)) {
 			return Ut.jsHistoryBack("아이디를 입력해주세요");
 		}
@@ -90,35 +86,61 @@ public class UsrMemberController {
 	@ResponseBody
 	public String doLogout() {
 
-		if (!rq.isLogined()) {
-			return Ut.jsHistoryBack("이미 로그아웃 상태 입니다");
-		}
-
 		rq.logout();
 
 		return Ut.jsReplace("로그아웃 되었습니다", "/");
 	}
-	
+
 	@RequestMapping("usr/member/myPage")
 	public String showMyPage() {
 		return "usr/member/myPage";
 	}
-	
+
 	@RequestMapping("usr/member/checkPassword")
 	public String showcheckPassword() {
 		return "usr/member/checkPassword";
 	}
-	
+
 	@RequestMapping("usr/member/doCheckPassword")
 	@ResponseBody
-	public String doCheckPassword(String loginPw , String replaceUri) {
+	public String doCheckPassword(String loginPw, String replaceUri) {
 		if (Ut.empty(loginPw)) {
 			return Ut.jsHistoryBack("비밀번호를 입력해주세요");
 		}
-		if(rq.getLoginedMember().getLoginPw().equals(loginPw) == false) {
+		if (rq.getLoginedMember().getLoginPw().equals(loginPw) == false) {
 			return rq.jsHistoryBack("비밀번호가 일치하지 않습니다");
 		}
-		
+
+		return rq.jsReplace("", replaceUri);
+	}
+	@RequestMapping("/usr/member/modify")
+	public String showModify() {
 		return "usr/member/modify";
+	}
+
+	@RequestMapping("/usr/member/doModify")
+	@ResponseBody
+	public String doModify(String loginPw, String name, String nickname, String cellphoneNum, String email) {
+		if (Ut.empty(loginPw)) {
+			loginPw = null;
+		}
+		if (Ut.empty(name)) {
+			return rq.jsHistoryBack("이름을 입력해주세요");
+		}
+		if (Ut.empty(nickname)) {
+			return rq.jsHistoryBack("닉네임을 입력해주세요");
+		}
+		if (Ut.empty(cellphoneNum)) {
+			return rq.jsHistoryBack("전화번호를 입력해주세요");
+		}
+		if (Ut.empty(email)) {
+			return rq.jsHistoryBack("이메일을 입력해주세요");
+		}
+
+		ResultData modifyRd = memberService.modify(rq.getLoginedMemberId(), loginPw, name, nickname, cellphoneNum,
+				email);
+
+		return rq.jsReplace(modifyRd.getMsg(), "/");
+
 	}
 }

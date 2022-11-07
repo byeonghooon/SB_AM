@@ -1,4 +1,4 @@
-package com.kbh.exam.demo.service;
+package com.kbh.exam.demo.repository;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;

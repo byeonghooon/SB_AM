@@ -1,7 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pageTitle" value="ARTICLE MODIFY" />
 <%@ include file="../common/head.jspf"%>
+<%@ include file="../common/toastUiEditorLib.jspf"%>
 
 <script>
 	let ArticleModify__submitDone = false;
@@ -9,21 +11,27 @@
 		if (ArticleModify__submitDone) {
 			return;
 		}
-		form.body.value = form.body.value.trim();
-		if (form.body.value.length == 0) {
+		const editor = $(form).find('.toast-ui-editor').data(
+				'data-toast-editor');
+		const markdown = editor.getMarkdown().trim();
+		if (markdown.length == 0) {
 			alert('내용을 입력해주세요');
-			form.body.focus();
+			editor.focus();
 			return;
 		}
+		form.body.value = markdown;
 		ArticleModify__submitDone = true;
+
 		form.submit();
 	}
 </script>
 
 <section class="mt-8 text-xl">
 	<div class="container mx-auto px-3">
-		<form class="table-box-type-1" method="POST" action="../article/doModify" onsubmit="ArticleModify__submit(this); return false;">
+		<form class="table-box-type-1" method="POST" action="../article/doModify"
+			onsubmit="ArticleModify__submit(this); return false;">
 			<input type="hidden" name="id" value="${article.id }" />
+			<input type="hidden" name="body" />
 			<table>
 				<colgroup>
 					<col width="200" />
@@ -31,58 +39,63 @@
 
 				<tbody>
 					<tr>
-						<th>번호</th>
+						<th bgcolor="gray">번호</th>
 						<td>${article.id }</td>
 					</tr>
 					<tr>
-						<th>작성날짜</th>
+						<th bgcolor="gray">작성날짜</th>
 						<td>${article.regDate }</td>
 					</tr>
 					<tr>
-						<th>수정날짜</th>
+						<th bgcolor="gray">수정날짜</th>
 						<td>${article.updateDate }</td>
 					</tr>
 					<tr>
-						<th>작성자</th>
+						<th bgcolor="gray">작성자</th>
 						<td>${article.extra__writerName }</td>
 					</tr>
 					<tr>
 						<th bgcolor="gray">조회수</th>
-						<td><span class="badge ">${article.hitCount }</span></td>
+						<td>
+							<span class="badge ">${article.hitCount }</span>
+						</td>
 					</tr>
 					<tr>
 						<th bgcolor="gray">추천</th>
 						<td>
-						<span class="badge">${article.goodReactionPoint }</span>
+							<span class="badge">${article.goodReactionPoint }</span>
 						</td>
 					</tr>
 					<tr>
-						<th>제목</th>
-						<td><input class="w-full" type="text" name="title" placeholder="제목을 입력해주세요" value="${article.title }" /></td>
+						<th bgcolor="gray">제목</th>
+						<td>
+							<input class="w-full" type="text" name="title" placeholder="제목을 입력해주세요"
+								value="${article.title }" />
+						</td>
 					</tr>
 					<tr>
-						<th>내용</th>
-						<td><textarea class="w-full textarea textarea-warning" type="text" name="body" placeholder="내용을 입력해주세요" />${article.body }</textarea></td>
+						<th bgcolor="gray">내용</th>
+						<td>
+							<div class="toast-ui-editor">
+								<script type="text/x-template">${article.body}</script>
+							</div>
+						</td>
 					</tr>
 					<tr>
 						<th></th>
-						<td><button class="btn btn-accent" type="submit" value="수정" />수정
-							</button></td>
+						<td>
+							<button class="btn btn-active btn-ghost" type="submit" value="수정">수정</button>
+						</td>
 					</tr>
 				</tbody>
-
 			</table>
+
+			<div class="btns">
+				<button class="btn btn-active btn-ghost" type="button" onclick="history.back();">뒤로가기</button>				
+			</div>
 		</form>
 
-		<div class="btns">
-			<button class="btn-text-link" type="button" onclick="history.back();">뒤로가기</button>
-			<a class="btn-text-link" href="../article/modify?id=${article.id }">수정</a>
-			<c:if test="${article.extra__actorCanDelete }">
-				<a class="btn-text-link" onclick="if(confirm('정말 삭제하시겠습니까?') == false) return false;"
-					href="../article/doDelete?id=${article.id }"
-				>삭제</a>
-			</c:if>
-		</div>
+
 	</div>
 </section>
 <%@ include file="../common/foot.jspf"%>

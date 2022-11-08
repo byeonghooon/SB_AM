@@ -51,6 +51,7 @@ public class UsrMemberController {
 
 		return ResultData.newData(joinRd, "member", member);
 	}
+	
 
 	@RequestMapping("usr/member/doLogin")
 	@ResponseBody

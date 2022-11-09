@@ -75,6 +75,7 @@ public class Rq {
 	public void logout() {
 		Session.removeAttribute("loginedMemberId");
 	}
+
 	public boolean isNotLogined() {
 		return !isLogined;
 	}
@@ -111,9 +112,18 @@ public class Rq {
 
 	public void printReplaceJs(String msg, String url) {
 		resp.setContentType("text/html; charset=UTF-8");
-		
-		print(Ut.jsReplace(msg,url));
+
+		print(Ut.jsReplace(msg, url));
 	}
 
+	public String getLoginUri() {
+		return "../member/login?afterLoginUri=" + getAfterLoginUri();
+		
+	}
+
+	public String getAfterLoginUri() {
+
+		return getEncodedCurrentUri();
+	}
 
 }

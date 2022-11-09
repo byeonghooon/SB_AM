@@ -93,7 +93,7 @@
 		</form>
 
 		<div class="btns">
-			<button class="btn-text-link btn btn-active btn-ghost" type="button"
+			<button class="btn btn-active btn-ghost" type="button"
 				onclick="history.back();">뒤로가기</button>
 			<c:if test="${article.extra__actorCanModify }">
 				<a class="btn-text-link btn btn-active btn-ghost"

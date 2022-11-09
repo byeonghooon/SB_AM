@@ -7,6 +7,7 @@
 <section class="mt-8 text-xl">
 	<div class="container mx-auto px-3 text-center">
 		<form method="post" action="../member/doLogin">
+		<input type="hidden" name="afterLoginUri" value="${param.afterLoginUri }"/>
 		<div class="hero bg-base-200">
   <div class="hero-content flex-col lg:flex-row-reverse">
     <div class="text-center lg:text-left">
@@ -38,7 +39,7 @@
 </div>
 		
 		<div class="btns">
-		<button class="btn-text-link" type="button" onclick="history.back();">뒤로가기</button>
+		<button class="btn btn-active btn-ghost" type="button" onclick="history.back();">뒤로가기</button>
 		</div>
 	
 		</form>

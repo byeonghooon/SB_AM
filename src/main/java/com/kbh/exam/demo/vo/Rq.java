@@ -34,7 +34,7 @@ public class Rq {
 	public Rq(HttpServletRequest req, HttpServletResponse resp, MemberService memberService) {
 		this.req = req;
 		this.resp = resp;
-		
+
 		paramMap = Ut.getParamMap(req);
 
 		this.Session = req.getSession();
@@ -122,7 +122,21 @@ public class Rq {
 
 	public String getLoginUri() {
 		return "../member/login?afterLoginUri=" + getAfterLoginUri();
-		
+
+	}
+
+	public String getLogoutUri() {
+
+		String requestUri = req.getRequestURI();
+
+		switch (requestUri) {
+		case "/usr/article/write":
+		case "/usr/article/modify":
+			return "../member/doLogout?afterLogoutUri=" + "/";
+		}
+
+		return "../member/doLogout?afterLogoutUri=" + getAfterLogoutUri();
+
 	}
 
 	public String getAfterLoginUri() {
@@ -133,9 +147,14 @@ public class Rq {
 		case "/usr/member/join":
 		case "/usr/member/findLoginId":
 		case "/usr/member/findLoginPw":
-			return Ut.getUriEncoded(paramMap.get("afterLoginUri"));
+			return Ut.getUriEncoded(Ut.getAttr(paramMap, "getAfterLoginUri", ""));
 		}
-		
+
+		return getEncodedCurrentUri();
+	}
+
+	public String getAfterLogoutUri() {
+
 		return getEncodedCurrentUri();
 	}
 

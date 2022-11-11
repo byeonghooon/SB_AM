@@ -33,7 +33,7 @@
 							<td>${article.id}</td>
 							<td>${article.regDate.substring(2,16)}</td>
 							<td><a class="hover:underline"
-								href="../article/detail?id=${article.id}">${article.title}</a></td>
+								href="${rq.getArticleDetailUriFromArticleList(article) }">${article.title}</a></td>
 							<td>${article.extra__writerName}</td>
 							<td>${article.hitCount}</td>
 							<td>${article.goodReactionPoint}</td>

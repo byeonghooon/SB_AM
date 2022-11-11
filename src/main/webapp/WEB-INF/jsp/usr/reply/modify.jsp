@@ -28,6 +28,7 @@
 			action="../reply/doModify"
 			onsubmit="ReplyModify__submit(this); return false;">
 			<input type="hidden" name="id" value="${reply.id }" />
+			<input type="hidden" name="replaceUri" value="${param.replaceUri }" />
 			<table class="table table-zebra w-full">
 				<colgroup>
 					<col width="200" />
@@ -71,13 +72,13 @@
 					<tr>
 						<th>내용</th>
 						<td><textarea class="textarea textarea-bordered w-full"
-								type="text" name="body" placeholder="내용을 입력해주세요" />${reply.body }</textarea>
+								type="text" name="body" placeholder="내용을 입력해주세요" >${reply.body }</textarea>
 						</td>
 					</tr>
 					<tr>
 						<th></th>
 						<td>
-							<button class="btn btn-active btn-ghost" type="submit" value="수정" />
+							<button class="btn btn-active btn-ghost" type="submit" value="수정" >
 							수정
 							</button>
 						</td>
@@ -88,8 +89,7 @@
 		</form>
 
 		<div class="btns">
-			<button class="btn-text-link btn btn-active btn-ghost" type="button"
-				onclick="history.back();">뒤로가기</button>
+			<a class="btn-text-link btn btn-active btn-ghost" href="${param.replceUri }">뒤로가기</a>
 		</div>
 	</div>
 </section>

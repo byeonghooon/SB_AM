@@ -6,8 +6,7 @@
 
 <script>
 	let submitJoinFormDone = false;
-	let vaildLoginId = "";
-	
+	let validLoginId = "";
 	function submitJoinForm(form) {
 		if (submitJoinFormDone) {
 			alert('처리중입니다');
@@ -68,15 +67,16 @@
 		submitJoinFormDone = true;
 		form.submit();
 	}
-	
 	function checkLoginIdDup(el) {
-		$('.loginId-msg').html('<div class="mt-2">확인중...</div>');
 		const form = $(el).closest('form').get(0);
-		
-		if(form.loginId.value.length == 0){
-			vaildLoginId = '';
+		if (form.loginId.value.length == 0) {
+			validLoginId = '';
 			return;
 		}
+		if (validLoginId == form.loginId.value){
+			return;
+		}
+		$('.loginId-msg').html('<div class="mt-2">확인중...</div>');
 		$.get('../member/getLoginIdDup', {
 			isAjax : 'Y',
 			loginId : form.loginId.value
@@ -88,14 +88,13 @@
 				validLoginId = '';
 			}
 		}, 'json');
-		
 	}
-	
 </script>
 
 <section class="mt-8 text-xl">
 	<div class="container mx-auto px-3">
-		<form class="table-box-type-1" method="POST" action="../member/doJoin" onsubmit="submitJoinForm(this); return false;">
+		<form class="table-box-type-1" method="POST" action="../member/doJoin"
+			onsubmit="submitJoinForm(this); return false;">
 			<input type="hidden" name="afterLoginUri" value="${param.afterLoginUri}" />
 			<table class="table table-zebra w-full">
 				<colgroup>
@@ -106,44 +105,53 @@
 					<tr>
 						<th>아이디</th>
 						<td>
-							<input name="loginId" class="w-full input input-bordered  max-w-xs" placeholder="아이디를 입력해주세요" onkeyup="checkLoginIdDup(this);" autocomplete="off"/>
-						<div class="loginId-msg"></div>
+							<input name="loginId" class="w-full input input-bordered  max-w-xs"
+								placeholder="아이디를 입력해주세요" onkeyup="checkLoginIdDup(this);"
+								autocomplete="off" />
+							<div class="loginId-msg"></div>
 						</td>
 					</tr>
 					<tr>
 						<th>비밀번호</th>
 						<td>
-							<input name="loginPw" class="w-full input input-bordered  max-w-xs" placeholder="비밀번호를 입력해주세요" />
+							<input name="loginPw" class="w-full input input-bordered  max-w-xs"
+								placeholder="비밀번호를 입력해주세요" />
 						</td>
 					</tr>
 					<tr>
 						<th>비밀번호 확인</th>
 						<td>
-							<input name="loginPwConfirm" class="w-full input input-bordered  max-w-xs" placeholder="비밀번호 확인을 입력해주세요" />
+							<input name="loginPwConfirm"
+								class="w-full input input-bordered  max-w-xs"
+								placeholder="비밀번호 확인을 입력해주세요" />
 						</td>
 					</tr>
 					<tr>
 						<th>이름</th>
 						<td>
-							<input name="name" class="w-full input input-bordered  max-w-xs" placeholder="이름을 입력해주세요" />
+							<input name="name" class="w-full input input-bordered  max-w-xs"
+								placeholder="이름을 입력해주세요" />
 						</td>
 					</tr>
 					<tr>
 						<th>닉네임</th>
 						<td>
-							<input name="nickname" class="w-full input input-bordered  max-w-xs" placeholder="닉네임을 입력해주세요" />
+							<input name="nickname" class="w-full input input-bordered  max-w-xs"
+								placeholder="닉네임을 입력해주세요" />
 						</td>
 					</tr>
 					<tr>
 						<th>전화번호</th>
 						<td>
-							<input name="cellphoneNum" class="w-full input input-bordered  max-w-xs" placeholder="전화번호를 입력해주세요" />
+							<input name="cellphoneNum" class="w-full input input-bordered  max-w-xs"
+								placeholder="전화번호를 입력해주세요" />
 						</td>
 					</tr>
 					<tr>
 						<th>이메일</th>
 						<td>
-							<input name="email" class="w-full input input-bordered  max-w-xs" placeholder="이메일을 입력해주세요" />
+							<input name="email" class="w-full input input-bordered  max-w-xs"
+								placeholder="이메일을 입력해주세요" />
 						</td>
 					</tr>
 					<tr>
@@ -158,7 +166,8 @@
 	</div>
 
 	<div class="container mx-auto btns">
-		<button class="btn-text-link btn btn-active btn-ghost" type="button" onclick="history.back();">뒤로가기</button>
+		<button class="btn-text-link btn btn-active btn-ghost" type="button"
+			onclick="history.back();">뒤로가기</button>
 	</div>
 
 </section>

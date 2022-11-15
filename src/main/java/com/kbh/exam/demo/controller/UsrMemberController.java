@@ -58,7 +58,7 @@ public class UsrMemberController {
 	public ResultData getLoginIdDup(String loginId) {
 
 		if (Ut.empty(loginId)) {
-			return ResultData.from("F-1", "아이디를 입력해주세요");
+			return ResultData.from("F-A1", "아이디를 입력해주세요");
 		}
 
 		Member oldMember = memberService.getMemberByLoginId(loginId);
@@ -66,7 +66,6 @@ public class UsrMemberController {
 		if (oldMember != null) {
 			return ResultData.from("F-A2", "해당 아이디는 이미 사용중입니다", "logindId", loginId);
 		}
-
 
 		return ResultData.from("S-1", "사용 가능한 아이디입니다", "logindId", loginId);
 	}

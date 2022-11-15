@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class UsrAjaxTextController {
 
+	@RequestMapping("usr/home/plus")
+	String showTestPage() {
+		return "usr/home/plus";
+	}
+	
 	@RequestMapping("usr/home/doPlus")
 	@ResponseBody
 	String doPlus(int num1, int num2) {

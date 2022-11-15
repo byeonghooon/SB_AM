@@ -45,23 +45,40 @@ public class UsrMemberController {
 		ResultData<Integer> joinRd = memberService.join(loginId, loginPw, name, nickname, cellphoneNum, email);
 
 		if (joinRd.isFail()) {
-			return  rq.jsHistoryBack(joinRd.getResultCode(), joinRd.getMsg());
+			return rq.jsHistoryBack(joinRd.getResultCode(), joinRd.getMsg());
 		}
 
 		String afterJoinUri = "../member/login?afterLoginUri=" + Ut.getUriEncoded(afterLoginUri);
 
 		return rq.jsReplace("회원가입이 완료되었습니다. 로그인 후 이용해주세요", afterJoinUri);
 	}
-	
+
+	@RequestMapping("usr/member/getLoginIdDup")
+	@ResponseBody
+	public ResultData getLoginIdDup(String loginId) {
+
+		if (Ut.empty(loginId)) {
+			return ResultData.from("F-1", "아이디를 입력해주세요");
+		}
+
+		Member oldMember = memberService.getMemberByLoginId(loginId);
+
+		if (oldMember != null) {
+			return ResultData.from("F-A2", "해당 아이디는 이미 사용중입니다", "logindId", loginId);
+		}
+
+
+		return ResultData.from("S-1", "사용 가능한 아이디입니다", "logindId", loginId);
+	}
+
 	@RequestMapping("usr/member/join")
 	public String showJoin() {
 		return "usr/member/join";
 	}
-	
 
 	@RequestMapping("usr/member/doLogin")
 	@ResponseBody
-	public String doLogin(String loginId, String loginPw ,@RequestParam(defaultValue = "/") String afterLoginUri) {
+	public String doLogin(String loginId, String loginPw, @RequestParam(defaultValue = "/") String afterLoginUri) {
 
 		if (Ut.empty(loginId)) {
 			return Ut.jsHistoryBack("아이디를 입력해주세요");
@@ -91,7 +108,7 @@ public class UsrMemberController {
 
 	@RequestMapping("usr/member/doLogout")
 	@ResponseBody
-	public String doLogout(@RequestParam(defaultValue = "/")String afterLogoutUri) {
+	public String doLogout(@RequestParam(defaultValue = "/") String afterLogoutUri) {
 
 		rq.logout();
 

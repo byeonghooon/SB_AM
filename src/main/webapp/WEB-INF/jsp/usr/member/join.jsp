@@ -4,6 +4,10 @@
 <c:set var="pageTitle" value="JOIN" />
 <%@ include file="../common/head.jspf"%>
 
+<!-- lodash debounce -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+
 <script>
 	let submitJoinFormDone = false;
 	let validLoginId = "";
@@ -73,7 +77,7 @@
 			validLoginId = '';
 			return;
 		}
-		if (validLoginId == form.loginId.value){
+		if (validLoginId == form.loginId.value) {
 			return;
 		}
 		$('.loginId-msg').html('<div class="mt-2">확인중...</div>');
@@ -89,6 +93,8 @@
 			}
 		}, 'json');
 	}
+	
+	const checkLoginIdDupDebounced = _.debounce(checkLoginIdDup,300); 
 </script>
 
 <section class="mt-8 text-xl">
@@ -106,7 +112,7 @@
 						<th>아이디</th>
 						<td>
 							<input name="loginId" class="w-full input input-bordered  max-w-xs"
-								placeholder="아이디를 입력해주세요" onkeyup="checkLoginIdDup(this);"
+								placeholder="아이디를 입력해주세요" onkeyup="checkLoginIdDupDebounced(this);"
 								autocomplete="off" />
 							<div class="loginId-msg"></div>
 						</td>

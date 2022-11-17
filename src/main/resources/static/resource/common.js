@@ -9,3 +9,14 @@ $('select[data-value]').each(function(index, el) {
 	}
 
 });
+
+$('.Popup').click(function(){
+	$('.layer').show();
+	$('.layer-bg').show();
+});
+
+$('.close-btn').click(function() {
+	$('.layer').hide();
+	$('.layer-bg').hide();
+	//	$('.layer').css('display', 'none');
+});

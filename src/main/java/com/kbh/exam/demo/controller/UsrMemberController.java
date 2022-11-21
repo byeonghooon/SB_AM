@@ -177,6 +177,7 @@ public class UsrMemberController {
 
 		if (Ut.empty(loginPw)) {
 			loginPw = null;
+			return rq.jsHistoryBack("비밀번호를 입력해주세요");
 		}
 		if (Ut.empty(name)) {
 			return rq.jsHistoryBack("이름을 입력해주세요");
@@ -196,5 +197,24 @@ public class UsrMemberController {
 
 		return rq.jsReplace(modifyRd.getMsg(), "/");
 
+	}
+
+	@RequestMapping("usr/member/findLoginId")
+	public String showFindLoginId() {
+		return "usr/member/findLoginId";
+	}
+
+	@RequestMapping("usr/member/doFindLoginId")
+	@ResponseBody
+	public String doFindLoginId(String name, String email,
+			@RequestParam(defaultValue = "/") String afterFindLoginIdUri) {
+
+		Member member = memberService.getMemberByNameAndEmail(name, email);
+
+		if (member == null) {
+			return Ut.jsHistoryBack("존재하지 않는 이름 또는 이메일입니다");
+		}
+
+		return Ut.jsReplace(Ut.f("회원님의 아이디는 [ %s ] 입니다", member.getLoginId()), afterFindLoginIdUri);
 	}
 }

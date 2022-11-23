@@ -1,3 +1,4 @@
+/* 폰트적용 */
 @font-face {
 	font-family: 'Pretendard-Regular';
 	src:
@@ -18,25 +19,53 @@ html>body, html>body .toast-ui-editor, html>body .toastui-editor-contents,
 	width: 100%;
 }
 
-.table-box-type-1 th, .table-box-type-1 td {
+.table-box-type-1>table th, .table-box-type-1>table td {
 	border: 1px solid black;
 	padding: 10px;
 	text-align: center;
 }
 
 .btn-text-link {
-	color: black;
+	color: grey;
 }
 
 .btn-text-link:hover {
-	color: grey;
+	color: green;
 	text-decoration: underline;
+}
+
+html[data-theme="dark"] :is(.table-box-type-1>table th, .table-box-type-1>table td) {
+	border-color: white;
+}
+
+html>body .toast-ui-viewer {
+	background-color: white;
+	padding: 10px;
+	border-radius: 10px;
+}
+
+/* 커스텀 */
+/* 테마 */
+.btn-theme-toggle > span:first-child {
+  display:none;
+}
+
+html[data-theme="dark"] .btn-theme-toggle > span:first-child {
+  display:inline;
+}
+
+html[data-theme="dark"] .btn-theme-toggle > span:last-child {
+  display:none;
+}
+
+body {
+	min-width: 800px;
 }
 
 .Popup {
 	font-size: 3rem;
 }
-
+/* 팝업시 나오는 요소 */
 .layer {
 	display: none;
 	width: 500px;
@@ -54,7 +83,7 @@ html>body, html>body .toast-ui-editor, html>body .toastui-editor-contents,
 .layer>h2, .layer>button {
 	padding: 20px;
 }
-
+/* 팝업 닫기 버튼(close) */
 .layer>button {
 	position: absolute;
 	bottom: 20px;
@@ -62,7 +91,7 @@ html>body, html>body .toast-ui-editor, html>body .toastui-editor-contents,
 	border: 5px solid white;
 	border-radius: 10px;
 }
-
+/* 레이어 bg */
 .layer-bg {
 	display: none;
 	width: 100%;

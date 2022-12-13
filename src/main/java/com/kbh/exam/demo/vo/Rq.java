@@ -182,7 +182,7 @@ public class Rq {
 //		case "/usr/article/modify":
 //			return "../member/doLogout?afterLogoutUri=" + "/";
 //		}
-		
+
 		return "/usr/member/doLogout?afterLogoutUri=" + getAfterLogoutUri();
 	}
 
@@ -193,7 +193,7 @@ public class Rq {
 		case "/adm/member/list":
 			return Ut.getUriEncoded(Ut.getStrAttr(paramMap, "afterLoginUri", ""));
 		}
-		
+
 		return getEncodedCurrentUri();
 	}
 
@@ -222,5 +222,17 @@ public class Rq {
 		}
 
 		return loginedMember.isAdmin();
+	}
+
+	public String getProfileImgUri(int membeId) {
+		return "/sb_am_img/member/" + membeId + "/extra/profileImg/1";
+	}
+
+	public String getProfileFallbackImgUri() {
+		return "https://via.placeholder.com/150/?text=*^_^*";
+	}
+
+	public String getProfileFallbackImgOnErrorHtml() {
+		return "this.src = '" + getProfileFallbackImgUri() + "'";
 	}
 }

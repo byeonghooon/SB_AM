@@ -22,15 +22,15 @@ public class Rq {
 	@Getter
 	private boolean isAjax;
 	@Getter
-	public boolean isLogined;
+	private boolean isLogined;
 	@Getter
-	public int loginedMemberId;
+	private int loginedMemberId;
 	@Getter
-	public Member loginedMember;
+	private Member loginedMember;
 
 	private HttpServletRequest req;
 	private HttpServletResponse resp;
-	private HttpSession Session;
+	private HttpSession session;
 	private Map<String, String> paramMap;
 
 	public Rq(HttpServletRequest req, HttpServletResponse resp, MemberService memberService) {
@@ -39,16 +39,18 @@ public class Rq {
 
 		paramMap = Ut.getParamMap(req);
 
-		this.Session = req.getSession();
+		this.session = req.getSession();
+
 		boolean isLogined = false;
 		int loginedMemberId = 0;
 		Member loginedMember = null;
 
-		if (Session.getAttribute("loginedMemberId") != null) {
+		if (session.getAttribute("loginedMemberId") != null) {
 			isLogined = true;
-			loginedMemberId = (int) Session.getAttribute("loginedMemberId");
+			loginedMemberId = (int) session.getAttribute("loginedMemberId");
 			loginedMember = memberService.getMemberById(loginedMemberId);
 		}
+
 		this.isLogined = isLogined;
 		this.loginedMemberId = loginedMemberId;
 		this.loginedMember = loginedMember;
@@ -74,7 +76,6 @@ public class Rq {
 
 	public void printHistoryBackJs(String msg) {
 		resp.setContentType("text/html; charset=UTF-8");
-
 		print(Ut.jsHistoryBack(msg));
 	}
 
@@ -91,11 +92,11 @@ public class Rq {
 	}
 
 	public void login(Member member) {
-		Session.setAttribute("loginedMemberId", member.getId());
+		session.setAttribute("loginedMemberId", member.getId());
 	}
 
 	public void logout() {
-		Session.removeAttribute("loginedMemberId");
+		session.removeAttribute("loginedMemberId");
 	}
 
 	public boolean isNotLogined() {
@@ -108,10 +109,6 @@ public class Rq {
 		return "usr/common/js";
 	}
 
-	public String jsHistoryBack(String msg) {
-		return Ut.jsHistoryBack(msg);
-	}
-
 	public String jsHistoryBackOnView(String resultCode, String msg) {
 		req.setAttribute("msg", String.format("[%s] %s", resultCode, msg));
 		req.setAttribute("historyBack", true);
@@ -120,6 +117,10 @@ public class Rq {
 
 	public String jsHistoryBack(String resultCode, String msg) {
 		msg = String.format("[%s] %s", resultCode, msg);
+		return Ut.jsHistoryBack(msg);
+	}
+
+	public String jsHistoryBack(String msg) {
 		return Ut.jsHistoryBack(msg);
 	}
 
@@ -145,21 +146,34 @@ public class Rq {
 
 	public void printReplaceJs(String msg, String url) {
 		resp.setContentType("text/html; charset=UTF-8");
-
 		print(Ut.jsReplace(msg, url));
 	}
 
 	public String getJoinUri() {
-		return "../member/join?afterLoginUri=" + getAfterLoginUri();
+		return "/usr/member/join?afterLoginUri=" + getAfterLoginUri();
 	}
 
 	public String getLoginUri() {
-		return "../member/login?afterLoginUri=" + getAfterLoginUri();
+		return "/usr/member/login?afterLoginUri=" + getAfterLoginUri();
+	}
 
+	public String getFindLoginIdUri() {
+		return "/usr/member/findLoginId?afterFindLoginIdUri=" + getAfterFindLoginIdUri();
+	}
+
+	public String getFindLoginPwUri() {
+		return "/usr/member/findLoginPw?afterFindLoginPwUri=" + getAfterFindLoginPwUri();
+	}
+
+	public String getAfterFindLoginIdUri() {
+		return getEncodedCurrentUri();
+	}
+
+	public String getAfterFindLoginPwUri() {
+		return getEncodedCurrentUri();
 	}
 
 	public String getLogoutUri() {
-
 		String requestUri = req.getRequestURI();
 
 		switch (requestUri) {
@@ -169,24 +183,24 @@ public class Rq {
 		}
 
 		return "../member/doLogout?afterLogoutUri=" + getAfterLogoutUri();
+	}
 
+	public String getAfterLogoutUri() {
+
+		return getEncodedCurrentUri();
 	}
 
 	public String getAfterLoginUri() {
 		String requestUri = req.getRequestURI();
 
+		// 로그인 후 다시 돌아가면 안되는 URL
 		switch (requestUri) {
 		case "/usr/member/login":
 		case "/usr/member/join":
 		case "/usr/member/findLoginId":
 		case "/usr/member/findLoginPw":
-			return Ut.getUriEncoded(Ut.getAttr(paramMap, "getAfterLoginUri", ""));
+			return Ut.getUriEncoded(Ut.getAttr(paramMap, "afterLoginUri", ""));
 		}
-
-		return getEncodedCurrentUri();
-	}
-
-	public String getAfterLogoutUri() {
 
 		return getEncodedCurrentUri();
 	}
@@ -195,19 +209,11 @@ public class Rq {
 		return "../article/detail?id=" + article.getId() + "&listUri=" + getEncodedCurrentUri();
 	}
 
-	public String getFindLoginIdUri() {
-		return "../member/findLoginId?afterFindLoginIdUri=" + getAfterFindLoginIdUri();
-	}
+	public boolean isAdmin() {
+		if (isLogined == false) {
+			return false;
+		}
 
-	public String getFindLoginPwUri() {
-		return "../member/findLoginPw?afterFindLoginPwUri=" + getAfterFindLoginPwUri();
-	}
-
-	public String getAfterFindLoginIdUri() {
-		return getEncodedCurrentUri();
-	}
-
-	public String getAfterFindLoginPwUri() {
-		return getEncodedCurrentUri();
+		return loginedMember.isAdmin();
 	}
 }

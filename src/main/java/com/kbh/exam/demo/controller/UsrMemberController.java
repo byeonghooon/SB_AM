@@ -94,6 +94,10 @@ public class UsrMemberController {
 		if (member.getLoginPw().equals(Ut.sha256(loginPw)) == false) {
 			return Ut.jsHistoryBack("비밀번호가 일치하지 않습니다.");
 		}
+		
+		if (member.isDelStatus() == true) {
+			return Ut.jsReplace("사용 정지 된 계정입니다", "/");
+		}
 
 		rq.login(member);
 

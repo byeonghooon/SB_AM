@@ -1,5 +1,7 @@
 package com.kbh.exam.demo.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +17,14 @@ public class MemberService {
 	private String siteMainUri;
 	@Value("${custom.siteName}")
 	private String siteName;
-	
+
 	private MemberRepository memberRepository;
 	private AttrService attrService;
 	private MailService mailService;
 
-	public MemberService(AttrService attrService,MailService mailService, MemberRepository memberRepository) {
+	public MemberService(AttrService attrService, MailService mailService, MemberRepository memberRepository) {
 		this.attrService = attrService;
-		this.mailService = mailService;		
+		this.mailService = mailService;
 		this.memberRepository = memberRepository;
 	}
 
@@ -38,7 +40,7 @@ public class MemberService {
 		if (existsMember != null) {
 			return ResultData.from("F-7", Ut.f("이미 사용중인 이름과(%s) 이메일(%s)입니다.", name, email));
 		}
-		
+
 		loginPw = Ut.sha256(loginPw);
 
 		memberRepository.join(loginId, loginPw, name, nickname, cellphoneNum, email);
@@ -73,7 +75,7 @@ public class MemberService {
 
 		return memberModifyAuthKey;
 	}
-	
+
 	public ResultData checkMemberModifyAuthKey(int actorId, String memberModifyAuthKey) {
 		String saved = attrService.getValue("member", actorId, "extra", "memberModifyAuthKey");
 
@@ -83,6 +85,7 @@ public class MemberService {
 
 		return ResultData.from("S-1", "정상 코드입니다");
 	}
+
 	public ResultData notifyTempLoginPwByEmailRd(Member actor) {
 		String title = "[" + siteName + "] 임시 패스워드 발송";
 		String tempPassword = Ut.getTempPassword(6);
@@ -102,5 +105,20 @@ public class MemberService {
 
 	private void setTempPassword(Member actor, String tempPassword) {
 		memberRepository.modify(actor.getId(), Ut.sha256(tempPassword), null, null, null, null);
+	}
+
+	public int getMembersCount(String authLevel, String searchKeywordTypeCode, String searchKeyword) {
+		return memberRepository.getMembersCount(authLevel, searchKeywordTypeCode, searchKeyword);
+	}
+
+	public List<Member> getForPrintMembers(String authLevel, String searchKeywordTypeCode, String searchKeyword,
+			int itemsInAPage, int page) {
+
+		int limitStart = (page - 1) * itemsInAPage;
+		int limitTake = itemsInAPage;
+		List<Member> members = memberRepository.getForPrintMembers(authLevel, searchKeywordTypeCode, searchKeyword,
+				limitStart, limitTake);
+
+		return members;
 	}
 }

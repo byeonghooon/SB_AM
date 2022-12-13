@@ -57,7 +57,7 @@ loginPw = 'admin',
 `name` = '관리자', 
 nickname = '관리자',
 cellphoneNum = '01012341234',
-email = 'orangeys1000@gmail.com';
+email = 'axdswww12@gmail.com';
 
 # 회원 테스트데이터 생성 (일반)
 INSERT INTO `member` 
@@ -68,7 +68,7 @@ loginPw = 'test1',
 `name` = '사용자1', 
 nickname = '사용자1',
 cellphoneNum = '01043214321',
-email = 'orangeys1000@gmail.com';
+email = 'axdswww12@gmail.com';
 
 INSERT INTO `member` 
 SET regDate = NOW(),
@@ -78,7 +78,7 @@ loginPw = 'test2',
 `name` = '사용자2', 
 nickname = '사용자2',
 cellphoneNum = '01067896789',
-email = 'orangeys1000@gmail.com';
+email = 'axdswww12@gmail.com';
 
 # 게시물 테이블에 회원번호 칼럼 추가
 ALTER TABLE article ADD COLUMN memberId INT(10) UNSIGNED NOT NULL AFTER `updateDate`;
@@ -291,6 +291,17 @@ ALTER TABLE `member` MODIFY COLUMN loginPw VARCHAR(100) NOT NULL;
 # 기존 회원의 비밀번호를 암호화 
 UPDATE `member`
 SET loginPw = SHA2(loginPw, 256);
+
+# 회원 대량 생성
+INSERT INTO `member`
+SET regDate = NOW(),
+updateDate = NOW(),
+loginId = UUID(),
+loginPw = 'test1',
+`name` = '사용자',
+nickname = '사용자',
+cellphoneNum = '01011111111',
+email = 'axdswww12@gmail.com';
 
 #######################################################
 

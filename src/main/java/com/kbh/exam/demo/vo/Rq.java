@@ -176,13 +176,16 @@ public class Rq {
 	public String getLogoutUri() {
 		String requestUri = req.getRequestURI();
 
-		switch (requestUri) {
-		case "/usr/article/write":
-		case "/usr/article/modify":
-			return "../member/doLogout?afterLogoutUri=" + "/";
+		System.err.println(requestUri);
+//		switch (requestUri) {
+//		case "/usr/article/write":
+//		case "/usr/article/modify":
+//			return "../member/doLogout?afterLogoutUri=" + "/";
+//		}
+		if (requestUri.contains("adm")) {
+			return "/usr/member/doLogout?afterLogoutUri=" + getAfterLogoutUri();
 		}
-
-		return "../member/doLogout?afterLogoutUri=" + getAfterLogoutUri();
+		return "/usr/member/doLogout?afterLogoutUri=" + getAfterLogoutUri();
 	}
 
 	public String getAfterLogoutUri() {

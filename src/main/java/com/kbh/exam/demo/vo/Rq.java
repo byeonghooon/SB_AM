@@ -191,7 +191,7 @@ public class Rq {
 		// 로그아웃 후 다시 돌아가면 안되는 URL
 		switch (requestUri) {
 		case "/adm/member/list":
-			return Ut.getUriEncoded(Ut.getAttr(paramMap, "afterLoginUri", ""));
+			return Ut.getUriEncoded(Ut.getStrAttr(paramMap, "afterLoginUri", ""));
 		}
 		
 		return getEncodedCurrentUri();
@@ -206,7 +206,7 @@ public class Rq {
 		case "/usr/member/join":
 		case "/usr/member/findLoginId":
 		case "/usr/member/findLoginPw":
-			return Ut.getUriEncoded(Ut.getAttr(paramMap, "afterLoginUri", ""));
+			return Ut.getUriEncoded(Ut.getStrAttr(paramMap, "afterLoginUri", ""));
 		}
 
 		return getEncodedCurrentUri();

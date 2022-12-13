@@ -14,11 +14,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
+import com.google.common.base.Joiner;
 import com.kbh.exam.demo.repository.GenFileRepository;
 import com.kbh.exam.demo.util.Ut;
 import com.kbh.exam.demo.vo.GenFile;
 import com.kbh.exam.demo.vo.ResultData;
-import com.google.common.base.Joiner;
 
 @Service
 public class GenFileService {
